@@ -1,0 +1,250 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #b0b0b0;
+  border-radius: 8px;
+  border: 2px solid #f0f0f0;
+}
+
+/* Hover state */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
+}
+
+
+/* move font styles to the component level */
+/* popins font style  */
+
+.poppins-font {
+  font-family: "Poppins", sans-serif !important;
+}
+
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+
+/* lora fonts  */
+
+/* // <uniquifier>: Use a unique and descriptive class name */
+/* // <weight>: Use a value from 400 to 700 */
+
+/* .lora-<uniquifier> {
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
+.lora-font {
+  font-family: "Lora", serif !important;
+}
+
+/* outfit font  */
+.outfit-font {
+  font-family: "Outfit", sans-serif !important;
+}
+
+.active-nav-link {
+  color: 'red';
+}
+
+.HomeCarousal .react-multiple-carousel__arrow {
+  background-color: #52C5B6;
+}
+
+.HomeCarousal .react-multiple-carousel__arrow--right {
+  right: -20px;
+}
+.HomeCarousal .react-multiple-carousel__arrow--left {
+  left: -20px;
+}
+
+.HomeCarousal .react-multi-carousel-list{
+  position: static !important;
+}
+
+.HomeCarousal .react-multiple-carousel__arrow::before {
+  font-size: 16px;
+}
+
+.graph-label-ul {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.graph-label {
+  font-family: "Poppins", sans-serif !important;
+  color: #2C2C2C;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.donut-graph-label-ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.donut-graph-label {
+  font-family: "Inter", sans-serif !important;
+  color: #2C2C2C;
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+.donut-graph-label-list {
+  margin: 28px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MuiPickersPopper-root {
+  z-index: 9999999999 !important;
+}

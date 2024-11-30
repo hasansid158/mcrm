@@ -1,0 +1,93 @@
+{
+  "name": "master-crm-react",
+  "version": "0.3",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.10.5",
+    "@fullcalendar/core": "^6.1.5",
+    "@fullcalendar/daygrid": "^6.1.5",
+    "@fullcalendar/interaction": "^6.1.5",
+    "@fullcalendar/list": "^6.1.5",
+    "@fullcalendar/react": "^6.1.5",
+    "@fullcalendar/scrollgrid": "^6.1.5",
+    "@fullcalendar/timegrid": "^6.1.5",
+    "@hello-pangea/dnd": "^16.6.0",
+    "@hookform/resolvers": "^2.9.10",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/lab": "^5.0.0-alpha.134",
+    "@mui/material": "^5.13.5",
+    "@mui/x-data-grid": "^6.0.1",
+    "@mui/x-date-pickers": "^5.0.15",
+    "@react-pdf/renderer": "^3.3.7",
+    "@reduxjs/toolkit": "^1.9.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
+    "chart.js": "^4.2.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^2.29.3",
+    "file-saver": "^2.0.5",
+    "immutable": "^5.0.0-beta.5",
+    "ldrs": "^1.0.1",
+    "lodash": "^4.17.21",
+    "material-ui-popup-state": "^5.1.2",
+    "papaparse": "^5.4.1",
+    "quill": "^2.0.2",
+    "quill-image-drop-module": "^1.0.3",
+    "quill-image-resize-module-react": "^3.0.0",
+    "react": "^18.3.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-csv": "^2.2.2",
+    "react-dom": "^18.3.0",
+    "react-draggable": "^4.4.6",
+    "react-dropzone": "^14.2.9",
+    "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.41.0",
+    "react-multi-carousel": "^2.8.5",
+    "react-quill": "^2.0.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.6.1",
+    "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.5",
+    "recharts": "^2.3.2",
+    "universal-cookie": "^4.0.4",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "firebase deploy",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "no-unused-vars": 0,
+      "undefined": 0
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "gh-pages": "^4.0.0",
+    "sass": "^1.69.5"
+  }
+}

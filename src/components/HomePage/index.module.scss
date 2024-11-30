@@ -1,0 +1,52 @@
+.carousal {
+    background-color: transparent;
+    // box-shadow: 0px 60px 160px 0px #0000000D
+}
+
+.carousalImage {
+    width: 100%;
+    // -webkit-border-radius: 30px;
+    // -moz-border-radius: 30px;
+    border-radius: 30px;
+    box-shadow: 1px 2px 2px 2px #0000000D;
+    // box-shadow: 0px 60px 160px 0px #0000000D;
+    /* box-shadow */
+
+}
+
+.carousalImage:after {
+    // -webkit-box-shadow: 0px 60px 160px 0px #0000000D;
+    // -moz-box-shadow: 0px 60px 160px 0px #0000000D;
+    // box-shadow: 0px 60px 160px 0px #0000000D;
+
+    // content: "";
+    // position: absolute;
+    // left: 0;
+    // right: 0;
+    // top: 0;
+    // bottom: 0;
+    // border: 1px solid #000;
+    // box-shadow: inset -20px 30px 20px -10px #000000,
+    //     inset 20px -30px 20px -10px #000000;
+}
+
+
+// information background
+
+.background {
+    position: relative;
+    // background-color: red;
+}
+
+.background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../common/icons/backgrounds/Group.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: opacity(0.3);
+}

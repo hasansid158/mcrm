@@ -1,0 +1,28 @@
+const createFormEnum = {
+  leads: 'leads',
+  loads: 'loads',
+  contacts: 'contacts',
+  accounts: 'accounts',
+  deals: 'deals',
+  tasks: 'tasks',
+  meetings: 'meetings',
+  calls: 'calls',
+  reports: 'reports',
+  analytics: 'analytics',
+  products: 'products',
+  quotes: 'quotes',
+  invoices: 'invoices',
+  vendors: 'vendors',
+  assets: 'assets',
+  sales_orders: 'sales_orders',
+  purchase_orders: 'purchase_orders',
+  dispatch_orders: 'dispatch_orders',
+  work_orders: 'work_orders',
+  payment_orders: 'payment_orders',
+  projects: 'projects',
+  gras: 'gras',
+  time_sheets: 'time_sheets',
+  supplier: 'supplier',
+};
+
+export default createFormEnum;
