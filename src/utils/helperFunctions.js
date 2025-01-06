@@ -8,8 +8,8 @@ export function objectValueToArray(objArray, key) {
   return _.uniqBy(objArray, key)?.map(item => item?.[key]);
 }
 
-export function objToValueLabel(obj) {
-  const converted = _.map(obj, (value, label) => ({label: value, value: label}))
+export function objToValueLabel(obj, isReversed = false) {
+  const converted = _.map(obj, (value, label) => ({label: isReversed ? label : value, value: isReversed ? value : label}))
   return converted;
 }
 

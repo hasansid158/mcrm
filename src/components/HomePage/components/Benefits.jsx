@@ -46,7 +46,7 @@ const MarketingCard = ({ details }) => {
             p={4}
         >
             <Box>
-                <Box sx={{ bgcolor: theme.palette.common.backgroundBlue, width: 'fit-content', p: 1.5, borderRadius: 2, width: {xs: '50px', sm: '60px', md: '80px'}, height: {xs: '50px', sm: '60px', md: '80px'}}}>
+                <Box sx={{ bgcolor: theme.palette.common.backgroundBlue, p: 1.5, borderRadius: 2, width: {xs: '50px', sm: '60px', md: '80px'}, height: {xs: '50px', sm: '60px', md: '80px'}}}>
                     <CheckedRoundIcon />
                 </Box>
             </Box>

@@ -1,6 +1,6 @@
 {
   "name": "master-crm-react",
-  "version": "0.3",
+  "version": "0.5",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -29,7 +29,9 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^2.29.3",
     "file-saver": "^2.0.5",
+    "html-react-parser": "^5.2.1",
     "immutable": "^5.0.0-beta.5",
+    "jsbarcode": "^3.11.6",
     "ldrs": "^1.0.1",
     "lodash": "^4.17.21",
     "material-ui-popup-state": "^5.1.2",
@@ -56,7 +58,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --host 0.0.0.0",
     "predeploy": "npm run build",
     "deploy": "firebase deploy",
     "build": "react-scripts build",
@@ -70,7 +72,9 @@
     ],
     "rules": {
       "no-unused-vars": 0,
-      "undefined": 0
+      "undefined": 0,
+      "react/prop-types": 0,
+      "react-hooks/exhaustive-deps": 0
     }
   },
   "browserslist": {
@@ -86,8 +90,15 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
     "@svgr/webpack": "^8.1.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.37.2",
     "gh-pages": "^4.0.0",
+    "globals": "^15.13.0",
+    "prettier": "^3.4.2",
     "sass": "^1.69.5"
   }
 }

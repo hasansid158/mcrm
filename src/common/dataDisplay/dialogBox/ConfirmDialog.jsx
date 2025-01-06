@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import DialogBox from './DialogBox'
-import { Box, Button } from '@mui/material'
-
+import DialogBox from './DialogBox';
+import { Box, Button } from '@mui/material';
+import PaperBox from 'common/ui/PaperBox';
 
 export default function ConfirmDialog({
   title = 'Warning',
@@ -16,39 +16,31 @@ export default function ConfirmDialog({
     <DialogBox
       maxWidth="xs"
       disableFormFooter
-      title={
-        <Box color='common.warning'>{title}</Box>
-      }
+      title={<Box color="common.warning">{title}</Box>}
       handleClose={onCancel}
       open={open}
       {...rest}
     >
-      <Box>
-        {children}
-      </Box>
+      <PaperBox>{children}</PaperBox>
 
-      <Box
-        mt='20px'
-        display='flex'
-        columnGap={1}
-      >
+      <Box mt="20px" display="flex" columnGap={1}>
         <Button
           fullWidth
-          variant='outlined'
-          color='secondary'
+          variant="outlined"
+          color="secondary"
           onClick={onCancel}
         >
           Cancel
         </Button>
         <Button
           fullWidth
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
           onClick={onConfirm}
         >
           Confirm
         </Button>
       </Box>
     </DialogBox>
-  )
+  );
 }

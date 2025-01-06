@@ -1,30 +1,30 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 const colours = {
-  lightGrey: "#efefef",
-  hoverGrey: "#D6D6DC",
+  lightGrey: '#efefef',
+  hoverGrey: '#D6D6DC',
   grey: '#cfcfcf',
   textWhite: '#fff',
   text: '#11100F',
-  background: "#f7f7f7",
-  backgroundGrey: "#F7F8FC",
+  background: '#f7f7f7',
+  backgroundGrey: '#F7F8FC',
   // backgroundGrey: "#f0f0f0",
-  backgroundLightGold: "#fff6e6",
-  transparentBg: "#1c1914f0",
-  darkBlack: "#1c1914",
-  fontColor: "#4d4d4d",
-  gold: "#FFCB5B",
-  lightGold: "#F5deb3",
-  darkGold: "#231e17",
+  backgroundLightGold: '#fff6e6',
+  transparentBg: '#1c1914f0',
+  darkBlack: '#1c1914',
+  fontColor: '#4d4d4d',
+  gold: '#FFCB5B',
+  lightGold: '#F5deb3',
+  darkGold: '#231e17',
   lightBlue: '#52C5B6',
-  pink: "#F76A63",
-  backgroundGold: "#FFCB5B",
-  heavyRed: "#8f5d54",
-  backgroundBlue: "#52C5B6",
-  backgroundDarkBlue: "#30344E",
-  error: "#FF5733",
-  warning: "#ffb343",
-  disabledColor: "#957b3f",
+  pink: '#F76A63',
+  backgroundGold: '#FFCB5B',
+  heavyRed: '#8f5d54',
+  backgroundBlue: '#52C5B6',
+  backgroundDarkBlue: '#30344E',
+  error: '#FF5733',
+  warning: '#ffb343',
+  disabledColor: '#a05649',
   lowGreen: '#8ed58e',
   highGreen: '#62e762',
   borderGrey: '#E1E2E3',
@@ -99,11 +99,11 @@ const theme = createTheme({
     // },
     pinkWhite: {
       main: colours.pink,
-      contrastText: "#fff",
+      contrastText: '#fff',
     },
     blueWhite: {
       main: colours.lightBlue,
-      contrastText: "#fff",
+      contrastText: '#fff',
     },
     whiteGold: {
       main: colours.white,
@@ -117,98 +117,98 @@ const theme = createTheme({
     fontFamily: [
       '"Outfit"',
       '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
+      'Arial',
+      'sans-serif',
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-    ].join(","),
+    ].join(','),
     h1: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "52px",
-      fontWeight: "bold",
-      lineHeight: "61px",
+      fontSize: '52px',
+      fontWeight: 'bold',
+      lineHeight: '61px',
     },
     h2: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "42px",
-      fontWeight: "bold",
-      lineHeight: "49px",
+      fontSize: '42px',
+      fontWeight: 'bold',
+      lineHeight: '49px',
     },
     h3: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "32px",
-      fontWeight: "bold",
-      lineHeight: "38px",
+      fontSize: '32px',
+      fontWeight: 'bold',
+      lineHeight: '38px',
     },
     h4: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "24px",
-      fontWeight: "600",
+      fontSize: '24px',
+      fontWeight: '600',
       lineHeight: 1,
     },
     h5: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "20px",
+      fontSize: '20px',
       fontWeight: 500,
       lineHeight: 1,
     },
     h6: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "18px",
+      fontSize: '18px',
       fontWeight: 500,
       // lineHeight: '20px',
     },
     pb: {
       fontFamily: '"Poppins", sans-serif',
-      fontSize: "16px",
+      fontSize: '16px',
       fontWeight: 500,
-      lineHeight: "19px",
+      lineHeight: '19px',
     },
     p: {
       fontFamily: '"Poppins", sans-serif',
-      fontSize: "16px",
+      fontSize: '16px',
       fontWeight: 400,
-      lineHeight: "19px",
+      lineHeight: '19px',
     },
     pO: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "16px",
+      fontSize: '16px',
       fontWeight: 400,
-      lineHeight: "19px",
+      lineHeight: '19px',
     },
     p2: {
       fontFamily: '"Poppins", sans-serif',
-      fontSize: "14px",
+      fontSize: '14px',
       fontWeight: 400,
-      lineHeight: "16px",
+      lineHeight: '16px',
     },
     p2O: {
       fontFamily: '"Outfit", sans-serif',
-      fontSize: "14px",
+      fontSize: '14px',
       fontWeight: 400,
-      lineHeight: "16px",
+      lineHeight: '16px',
     },
     p3: {
       fontFamily: '"Poppins", sans-serif',
-      fontSize: "13px",
+      fontSize: '13px',
       fontWeight: 400,
-      lineHeight: "15px",
+      lineHeight: '15px',
     },
     description: {
       fontFamily: '"Poppins", sans-serif',
-      fontSize: "12px",
+      fontSize: '12px',
       fontWeight: 400,
-      lineHeight: "14px",
+      lineHeight: '14px',
     },
     textLink: {
       fontFamily: '"Poppins", sans-serif',
-      fontSize: "10px",
+      fontSize: '10px',
       fontWeight: 500,
-      lineHeight: "12px",
+      lineHeight: '12px',
     },
     button: {
-      textTransform: "none",
+      textTransform: 'none',
     },
   },
 
@@ -226,18 +226,18 @@ const theme = createTheme({
     MuiSnackbar: {
       variants: [
         {
-          props: { variant: "primary" },
+          props: { variant: 'primary' },
           style: {
-            "& .MuiSnackbarContent-root": {
+            '& .MuiSnackbarContent-root': {
               background: colours.gold,
               color: colours.white,
             },
           },
         },
         {
-          props: { variant: "secondary" },
+          props: { variant: 'secondary' },
           style: {
-            "& .MuiSnackbarContent-root": {
+            '& .MuiSnackbarContent-root': {
               background: colours.backgroundGrey,
             },
           },
@@ -249,7 +249,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: 'white',
-        }
+        },
       },
     },
 
@@ -259,18 +259,18 @@ const theme = createTheme({
           fontSize: '14px',
           backgroundColor: 'white',
           borderRadius: '5px !important',
-        }
+        },
       },
       variants: [
         {
-          props: { size: "small" },
+          props: { size: 'small' },
           style: {
             height: '40px',
             minHeight: '40px',
           },
         },
         {
-          props: { size: "large" },
+          props: { size: 'large' },
           style: {
             height: '48px',
             minHeight: '48px',
@@ -285,8 +285,8 @@ const theme = createTheme({
           fontFamily: '"Outfit", sans-serif',
           fontSize: '18px',
           background: 'white',
-        }
-      }
+        },
+      },
     },
 
     MuiAutocomplete: {
@@ -296,26 +296,26 @@ const theme = createTheme({
         },
         popper: {
           zIndex: 99999999999,
-        }
+        },
       },
       variants: [
         {
-          props: { size: "small" },
+          props: { size: 'small' },
           style: {
             '& .MuiInputBase-root': {
               minHeight: '40px',
-            }
+            },
           },
         },
         {
-          props: { size: "large" },
+          props: { size: 'large' },
           style: {
             '& .MuiInputBase-root': {
               minHeight: '48px',
-            }
+            },
           },
         },
-      ]
+      ],
     },
 
     MuiButton: {
@@ -327,19 +327,19 @@ const theme = createTheme({
         root: {
           height: '48px',
           fontFamily: '"Outfit", sans-serif',
-          fontSize: "14px",
+          fontSize: '14px',
           fontWeight: 500,
           borderRadius: '10px',
         },
       },
       variants: [
         {
-          props: { size: "tiny" },
+          props: { size: 'tiny' },
           style: {
             height: '35px',
             '& svg': {
               fontSize: '20px',
-            }
+            },
           },
         },
       ],
@@ -348,10 +348,11 @@ const theme = createTheme({
     MuiLoadingButton: {
       styleOverrides: {
         root: {
-          "&.MuiLoadingButton-loading": {
+          '&.MuiLoadingButton-loading': {
             background: colours.disabledColor,
+            color: 'white',
           },
-          "& .MuiLoadingButton-loadingIndicator": {
+          '& .MuiLoadingButton-loadingIndicator': {
             color: colours.lightGold,
           },
         },
@@ -370,7 +371,7 @@ const theme = createTheme({
             backgroundColor: colours.hoverGrey,
           },
           '& input': {
-            fontSize: '12px'
+            fontSize: '12px',
           },
         },
       },
@@ -384,9 +385,9 @@ const theme = createTheme({
             padding: 'unset',
             minWidth: 'unset',
           },
-        }
-      }
-    }
+        },
+      },
+    },
   },
 });
 

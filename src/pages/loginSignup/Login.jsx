@@ -20,7 +20,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const { isLogin } = useSelector(state => state.auth);
+  const { isLogin } = useSelector((state) => state.auth);
 
   const sxTagUpdate = {
     '& .MuiInputBase-root': {
@@ -74,7 +74,7 @@ const Login = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        mt:"-150px"
+        mt: '-150px',
       }}
     >
       <Box
@@ -107,7 +107,6 @@ const Login = () => {
 
         <InputField
           name="username"
-          label="Username"
           variant="outlined"
           helperText=""
           formData={formData}
@@ -119,7 +118,6 @@ const Login = () => {
         <Box mt={2}>
           <InputField
             name="password"
-            label="Password"
             variant="outlined"
             helperText=""
             formData={formData}

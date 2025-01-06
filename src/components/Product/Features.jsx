@@ -109,12 +109,12 @@ const Features = () => {
         <Box>
             <Box>
                 {featuresList.map((details, index) =>
-                    <Box backgroundColor={index % 2 == 0 ? '#F7F8FC' : 'white'} py={{ xs: 4, md: 8 }}>
+                    <Box backgroundColor={index % 2 === 0 ? '#F7F8FC' : 'white'} py={{ xs: 4, md: 8 }}>
                         <PublicContainer>
                             <Grid container
                                 justifyContent="center"
                                 alignItems={'center'}
-                                direction={{ md: index % 2 == 0 ? 'row-reverse' : 'row' }}
+                                direction={{ md: index % 2 === 0 ? 'row-reverse' : 'row' }}
                                 spacing={2}
                             >
                                 <Grid item xs={12} md={6}>

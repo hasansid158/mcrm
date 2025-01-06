@@ -1,0 +1,55 @@
+services:
+  dev:
+    image: hasansid158/mcrm:latest
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src:ro
+    environment:
+      - WATCHPACK_POLLING=true
+    # env_file:
+    #   - ./.env
+
+  build:
+    image: hasansid158/mcrm:latest
+    build:
+      context: .
+    working_dir: /app
+    command: ["npm", "run", "build"]
+    volumes:
+      - .:/app
+      - ./build:/app/build:rw
+    init: false
+
+  firebase-deploy:
+    image: hasansid158/mcrm:latest
+    build:
+      context: .
+    working_dir: /app
+    command: ["/bin/sh", "-c", "npm install -g firebase-tools && npm run build && firebase deploy"]
+    volumes:
+      - .:/app
+      - ./build:/app/build:rw
+    init: false
+
+## install new npm package
+  install:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    entrypoint: ["npm", "install"]
+    init: false
+
+## uninstall npm package
+  uninstall:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    entrypoint: ["npm", "uninstall"]
+    init: false

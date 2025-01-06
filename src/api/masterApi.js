@@ -1,6 +1,6 @@
-import instanceApi from "./instanceApi";
+import instanceApi from './instanceApi';
 
-import { isArray } from "lodash";
+import { isArray } from 'lodash';
 
 //AUTH
 export const loginApi = async (body) => {
@@ -14,7 +14,7 @@ export const signUpApi = async (body) => {
 export const getUserDetails = async () => {
   const res = await instanceApi.get('Login/GetUserDetails');
   return res?.data;
-}
+};
 export const UpdateUserDetail = async (body) => {
   const res = await instanceApi.post('Scheduler/CreateMeeting', body);
   return res;
@@ -24,11 +24,13 @@ export const UpdateUserDetail = async (body) => {
 export const getAdminPermissions = async () => {
   const res = await instanceApi.get('ConsoleAdministration/GetPermissions');
   return res?.data;
-}
+};
 export const getAdminUserRolePermissions = async () => {
-  const res = await instanceApi.get('ConsoleAdministration/GetUsersRolePermissions');
+  const res = await instanceApi.get(
+    'ConsoleAdministration/GetUsersRolePermissions',
+  );
   return res?.data;
-}
+};
 
 //Projects
 export const getAllProjects = async () => {
@@ -40,7 +42,6 @@ export const createNewProject = async (body) => {
   return res;
 };
 
-
 //Loads
 export const getAllLoads = async () => {
   const res = await instanceApi.get('Loads/Loads');
@@ -51,7 +52,9 @@ export const createLoad = async (body) => {
   return res;
 };
 export const getLoadById = async (loadId) => {
-  const res = await instanceApi.get(`Loads/GetLoadDetailsById?LoadId=${loadId}`);
+  const res = await instanceApi.get(
+    `Loads/GetLoadDetailsById?LoadId=${loadId}`,
+  );
   return res?.data;
 };
 export const removeLoadById = async (loadId) => {
@@ -62,7 +65,6 @@ export const getGraByLoadId = async (loadId) => {
   const res = await instanceApi.get(`Loads/GetGRAsByLoadId/${loadId}`);
   return res?.data;
 };
-
 
 //Products
 export const getAllProducts = async () => {
@@ -99,6 +101,10 @@ export const createBulkAsset = async (body) => {
   const res = await instanceApi.post('Asset/CreateAssets', body);
   return res?.data;
 };
+export const assetImport = async (body) => {
+  const res = await instanceApi.post('Asset/ImportAssets', body);
+  return res?.data;
+};
 //Asset attach
 export const attachAssetToLoad = async (body) => {
   const res = await instanceApi.post('Asset/AssignAssetsToLoad', body);
@@ -106,15 +112,23 @@ export const attachAssetToLoad = async (body) => {
 };
 //Asset Testing api
 export const getAssetTestConditions = async (assetID) => {
-  const res = await instanceApi.get(`AssetTesting/AssetTestConditions/${assetID}`);
+  const res = await instanceApi.get(
+    `AssetTesting/AssetTestConditions/${assetID}`,
+  );
   return res?.data;
 };
 export const submitAssetTestConditions = async (body) => {
-  const res = await instanceApi.post('AssetTesting/SubmitAssetTestConditions', body);
+  const res = await instanceApi.post(
+    'AssetTesting/SubmitAssetTestConditions',
+    body,
+  );
   return res;
 };
 export const submitBulkAssetTestConditions = async (body) => {
-  const res = await instanceApi.post('AssetTesting/SubmitBulkAssetTestConditions', body);
+  const res = await instanceApi.post(
+    'AssetTesting/SubmitBulkAssetTestConditions',
+    body,
+  );
   return res;
 };
 export const createTestConditions = async (body) => {
@@ -145,7 +159,6 @@ export const submitAssetTransferLocation = async (body) => {
   return res;
 };
 
-
 //Reorts
 export const getGRAreport = async () => {
   const res = await instanceApi.get('Reports/AssetGRAReport');
@@ -172,8 +185,6 @@ export const getDispatchReport = async () => {
   return res?.data;
 };
 
-
-
 //GRA
 export const submitGenerateGRA = async (body) => {
   const res = await instanceApi.post('Loads/GenerateGRA', body);
@@ -183,7 +194,6 @@ export const getGraList = async () => {
   const res = await instanceApi.get('Loads/GetGRAlist');
   return res?.data;
 };
-
 
 //Accounts
 export const getAllAccounts = async () => {
@@ -221,14 +231,11 @@ export const updateTaskStatus = async (body) => {
   return res;
 };
 
-
-
 //Blancoo
 export const blancooSync = async (body) => {
   const res = await instanceApi.post('Asset/BlanccoAssetSync', body);
   return res;
 };
-
 
 //SubmitEnquiryRequest
 export const submitEnquiryRequest = async (body) => {
@@ -237,15 +244,17 @@ export const submitEnquiryRequest = async (body) => {
 };
 
 //home
-  export const getHomepageData = async () => {
-    const res = await instanceApi.get('CRMDashBoard/CRMDashBoardData');
-    return res?.data;
-  };
+export const getHomepageData = async () => {
+  const res = await instanceApi.get('CRMDashBoard/CRMDashBoardData');
+  return res?.data;
+};
 
-  //invoices
-  export const getInvoiceOrderById = async (obj = null) => {
-    if (!obj) return;
+//invoices
+export const getInvoiceOrderById = async (obj = null) => {
+  if (!obj) return;
 
-    const res = await instanceApi.get(`InvoiceOrder/InvoiceOrderById/${obj?.invoiceOrderID}`);
-    return res?.data;
-  };
+  const res = await instanceApi.get(
+    `InvoiceOrder/InvoiceOrderById/${obj?.invoiceOrderID}`,
+  );
+  return res?.data;
+};

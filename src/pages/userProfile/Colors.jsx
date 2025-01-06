@@ -1,6 +1,6 @@
 import React from "react";
 
-import { getColors , createColors , updateColors , deleteColors } from "api/profileApis";
+import { getColors, createColors, updateColors, deleteColors } from "api/profileApis";
 import ProfileTable from "./componenets/ProfileTable";
 import { colorsColumn } from "./componenets/tableColumns/colorsColumn";
 import ColorsForm from "./componenets/forms/ColorsForm";

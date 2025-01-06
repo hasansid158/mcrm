@@ -1,22 +1,25 @@
 import React from 'react';
-import { dotWave, waveform } from 'ldrs'
+import { dotWave, waveform } from 'ldrs';
 
+import LinearProgress from '@mui/material/LinearProgress';
 
 import theme from 'core/theme';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-dotWave.register()
-waveform.register()
+dotWave.register();
+waveform.register();
 
 const SpinLoader = ({
   loading = false,
   disabled = false,
-  isFullScreen = false,
+  // isFullScreen = false,
+  isProgress = false,
+  progressValue = 0,
+  progressText = '',
   noBlur = false,
   rest,
   sx = {},
 }) => {
-
   if (!loading && !disabled) return;
 
   return (
@@ -36,29 +39,50 @@ const SpinLoader = ({
         ...sx,
       }}
     >
-      {!disabled &&
+      {isProgress && (
         <Box
-          borderRadius='50%'
-          backgroundColor='white'
-          boxShadow='0px 0px 16px -3px #9f9f9f'
-          width='75px'
-          height='75px'
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
+          backgroundColor="white"
+          boxShadow="0px 0px 16px -3px #9f9f9f"
+          width="90%"
+          borderRadius={1}
+          p={1.5}
+        >
+          <Box mb={1.5}>
+            <Typography variant="p2">{progressText}</Typography>
+          </Box>
+          <Typography variant="h6" textAlign="center">
+            {progressValue}%
+          </Typography>
+          <LinearProgress
+            variant="determinate"
+            value={progressValue}
+            sx={{ height: '16px' }}
+          />
+        </Box>
+      )}
+
+      {!isProgress && !disabled && (
+        <Box
+          borderRadius="50%"
+          backgroundColor="white"
+          boxShadow="0px 0px 16px -3px #9f9f9f"
+          width="75px"
+          height="75px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
         >
           <l-waveform
             color={theme.palette.primary.main}
             size={30}
-            speed={.9}
-            stroke='4'
+            speed={0.9}
+            stroke="4"
             {...rest}
-          >
-          </l-waveform>
+          ></l-waveform>
         </Box>
-      }
+      )}
     </Box>
   );
-}
+};
 
 export default SpinLoader;

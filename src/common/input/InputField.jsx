@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { TextField, InputAdornment, Box, IconButton, InputLabel, Typography } from '@mui/material'
 
 import { useWatch, Controller } from 'react-hook-form';
@@ -19,6 +19,7 @@ export default function InputField({
   formData,
   name = '',
   label,
+  noLabel = false,
   placeholder,
   onChange = () => { },
   onBlur = () => { },
@@ -87,8 +88,32 @@ export default function InputField({
     return isEditable && editedValue !== '' && editedValue !== value;
   }
 
+  const renderLabel = useCallback(
+    () => {
+      if (isLabelOutside || noLabel) return;
+
+      const hasStar = (required && !disableStar);  
+      const labelText = label || camelCaseToSpace(name) || '';
+
+      const labelWithStar = <>
+        {labelText}&nbsp; 
+        <Typography 
+          variant='h5' 
+          color='crimson'
+          component='span'
+        >
+          *
+        </Typography>
+      </>;
+  
+      if (!!hasStar) return labelWithStar;
+      return labelText;
+      
+    }, [isLabelOutside, noLabel, label, name, required, disableStar],
+  );
+  
   const inputProps = (field) => ({
-    label: !isLabelOutside ? `${label || camelCaseToSpace(name)}${required && !disableStar ? '  *' : ''}` : '',
+    label: renderLabel(),
     placeholder: placeholder && (placeholder || camelCaseToSpace(name)),
     onBlur: (e) => {
       !disableTrim && trimOnBlur();

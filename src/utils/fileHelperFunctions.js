@@ -1,5 +1,8 @@
 import { saveAs } from "file-saver";
 
+import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
+
 // Function to convert Blob to string
 export const blobToString = (blob) => {
   return new Promise((resolve, reject) => {
@@ -64,4 +67,34 @@ export const getFileFormData = (files, name = 'attachments') => {
     formData.append(name, file?.fileContent);
   });
   return formData;
+}
+
+
+export const parseCsvXlsx = (file, onDataReady = () => {} ) => {
+  if (!file) return;
+
+  if (file?.type === 'text/csv') {
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (res) => {
+        onDataReady(res?.data);
+      },
+    });
+  }
+  
+  if (file?.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const fileData = e.target.result;
+      const workbook = XLSX.read(fileData, { type: 'binary' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const data = XLSX.utils.sheet_to_json(sheet);
+      onDataReady(data);
+    };
+    reader.readAsArrayBuffer(file);
+  }
 }

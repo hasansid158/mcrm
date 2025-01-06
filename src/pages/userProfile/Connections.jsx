@@ -79,19 +79,19 @@ const Connections = () => {
                                 <Stack direction={'row'} justifyContent={'start'} alignItems={'center'} spacing={2}>
                                     <Stack width={'45px'}>
                                         <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: '25px' }}>
-                                            <img src={item.logo} height={25} />
+                                            <img src={item.logo} alt='' height={25} />
                                         </Box>
                                     </Stack>
                                     <Stack>
                                         <Typography variant='h6' lineHeight={'1'}>{item.title}</Typography>
-                                        {item.connected == true ?
+                                        {item.connected === true ?
                                             <Typography variant='body2' sx={{ color: 'text.secondary' }}>connected</Typography>
                                             :
                                             <Typography variant='body2' sx={{ color: 'text.secondary' }}>Not connected</Typography>
                                         }
                                     </Stack>
                                 </Stack>
-                                {item.connected == true ?
+                                {item.connected === true ?
                                     <Button variant='outlined' color='secondary'>
                                         <DeleteIcon />
                                     </Button>

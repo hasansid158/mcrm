@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import {
   DataGrid,
   gridPageCountSelector,
@@ -14,8 +14,7 @@ import { arrayToValueLabel } from 'utils/helperFunctions';
 
 import SpinLoader from '../spinLoader/SpinLoader';
 
-
-const PAGE_SIZE_OPTIONS = [10, 15, 25, 40, 50];
+const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
 
 function CustomPagination() {
   const apiRef = useGridApiContext();
@@ -54,8 +53,8 @@ function CustomFooter({ paginationModel, setPaginationModel }) {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: {xs: 'center', sm: 'space-between'},
-        flexDirection: {xs: 'column-reverse', sm: 'row' },
+        justifyContent: { xs: 'center', sm: 'space-between' },
+        flexDirection: { xs: 'column-reverse', sm: 'row' },
         flexWrap: 'wrap',
         width: '100%',
         gap: 2,
@@ -63,23 +62,20 @@ function CustomFooter({ paginationModel, setPaginationModel }) {
         px: 2,
       }}
     >
-      <Box
-        display='flex'
-        alignItems='center'
-      >
+      <Box display="flex" alignItems="center">
         <Typography
           sx={{ width: '95px' }}
-          variant='description'
-          fontWeight='600'
+          variant="description"
+          fontWeight="600"
         >
           Rows per page
         </Typography>
         <Selector
-          sx={{width: '70px'}}
+          sx={{ width: '70px' }}
           isSmallHeight
           value={paginationModel.pageSize}
           onChange={(name, value) => {
-            setPaginationModel(prev => ({
+            setPaginationModel((prev) => ({
               ...prev,
               pageSize: value,
             }));
@@ -95,9 +91,9 @@ function CustomFooter({ paginationModel, setPaginationModel }) {
   );
 }
 
-export default function DataTable({
+const DataTable = ({
   density = 'compact',
-  height='calc(100dvh - 200px)',
+  height = 'calc(100dvh - 200px)',
   maxHeight = 'unset',
   minHeight = 'unset',
   hideFooter = false,
@@ -106,18 +102,17 @@ export default function DataTable({
   fullBorder = false,
   autoHeight = false,
   sx,
-  showFilterBar = false,
   showPageSize = false,
   initialState,
   isFullTable = false,
   invisibleColumns = {},
   slots = {},
   width = '100%',
-  defaultPageSize = 15,
+  defaultPageSize = 20,
   disabled = false,
   loading = false,
   ...rest
-}) {
+}) => {
   const [rows, setRows] = useState([]);
 
   const [paginationModel, setPaginationModel] = useState({
@@ -137,31 +132,41 @@ export default function DataTable({
     }
   }, [rowData]);
 
-  const CustomLoading = () => (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
-      <SpinLoader loading noBlur/>
-    </Box>
-  )
+  const CustomLoading = useCallback(
+    () => (
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+        }}
+      >
+        <SpinLoader loading noBlur />
+      </Box>
+    ),
+    [],
+  );
 
   return (
-    <Box sx={{
-      height: autoHeight ? 'unset' : height,
-      maxHeight: maxHeight,
-      minHeight: minHeight,
-      width: width,
-    }}>
+    <Box
+      sx={{
+        height: autoHeight ? 'unset' : height,
+        maxHeight: maxHeight,
+        minHeight: minHeight,
+        width: width,
+      }}
+    >
       <DataGrid
         slots={{
-          pagination: () => <CustomFooter paginationModel={paginationModel} setPaginationModel={setPaginationModel} />,
+          pagination: () => (
+            <CustomFooter
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+            />
+          ),
           ...slots,
           loadingOverlay: CustomLoading,
         }}
@@ -174,7 +179,7 @@ export default function DataTable({
             columnVisibilityModel: {
               ...invisibleColumns,
               id: false,
-            }
+            },
           },
           ...initialState,
         }}
@@ -188,9 +193,11 @@ export default function DataTable({
         loading={loading || disabled}
         sx={{
           fontSize: '11px',
-          ...(fullBorder ? {} : {
-            border: 'unset',
-          }),
+          ...(fullBorder
+            ? {}
+            : {
+                border: 'unset',
+              }),
           '& .MuiDataGrid-columnHeaders': {
             backgroundColor: 'common.backgroundGrey',
           },
@@ -201,10 +208,10 @@ export default function DataTable({
           '& .MuiDataGrid-main': {
             border: 1,
             borderColor: 'common.borderGrey',
-            borderRadius: '12px'
+            borderRadius: '12px',
           },
           '& .MuiDataGrid-cell': {
-            px: .5,
+            px: 0.5,
           },
           '& .MuiDataGrid-columnHeaderTitle': {
             fontWeight: 600,
@@ -218,4 +225,6 @@ export default function DataTable({
       />
     </Box>
   );
-}
+};
+
+export default memo(DataTable);

@@ -9,13 +9,12 @@ import SearchSelect from 'common/input/SearchSelect';
 import { numberOnly } from 'utils/textFormatUtils';
 
 import { getModels, getLoadsList } from 'api/listApis';
-import { isEmpty } from 'lodash';
+import { isEmpty, find, isString } from 'lodash';
 
 import CustomerProjectSelectors from 'components/createFormComponents/dynamicSelectorFields/CustomerProjectSelectors';
 
 const AssetsForm = ({
   formData,
-  watchedData,
   isUpdate = false,
   returnLabel = false,
   handleEditApply = () => {},
@@ -33,15 +32,11 @@ const AssetsForm = ({
 }) => {
   const [modelList, setModelList] = useState(null);
   const [loadList, setLoadList] = useState(null);
-  const [loadOnce, setLoadOnce] = useState(false);
 
-  const { userProjects = [] } = useSelector(state => state?.userDetails);
-  const {
-    makes,
-    itemTypes,
-    warehouses,
-    assetStatus,
-  } = useSelector(state => state.lists)
+  const { userProjects = [] } = useSelector((state) => state?.userDetails);
+  const { makes, itemTypes, warehouses, assetStatus } = useSelector(
+    (state) => state.lists,
+  );
 
   const commonInputProps = {
     formData: formData,
@@ -55,35 +50,39 @@ const AssetsForm = ({
     if (value === null || value === undefined || value === '') {
       name === 'make' ? setModelList(null) : setLoadList(null);
       return;
-    };
+    }
 
     onChange(name, value);
 
     let updatedValue = value;
 
     if (name === 'make') {
-      updatedValue = returnLabel ? makes?.find(item => item?.value === value)?.id : value;
+      updatedValue = returnLabel
+        ? makes?.find((item) => item?.value === value)?.id
+        : value;
       const data = await getModels([updatedValue]);
       setModelList(data);
     } else if (name === 'projectId') {
-      updatedValue = returnLabel ? userProjects?.find(item => item?.value === value)?.id : value;
+      updatedValue = returnLabel
+        ? userProjects?.find((item) => item?.value === value)?.id
+        : value;
       getLoadsList([updatedValue])
-        ?.then(res => setLoadList(res))
-        ?.catch(() => setLoadList([]))
+        ?.then((res) => setLoadList(res))
+        ?.catch(() => setLoadList([]));
       // const data = await getLoadsList([updatedValue]);
     }
-  }
+  };
+
+  const { make, projectId } = formData.watch();
 
   useEffect(() => {
-    //Later move the temporary states to redux to avoid complex logics
-    if (loadOnce) return;
+    const makeId = isString(make) ? find(makes, { value: make })?.id : make;
+    !!make && handleValueChange('make', makeId);
+  }, [make]);
 
-    if (!isEmpty(watchedData)) {
-      !!watchedData?.make && handleValueChange('make', watchedData?.make);
-      !!watchedData?.projectId && handleValueChange('projectId', watchedData?.projectId);
-      setLoadOnce(true);
-    }
-  }, [watchedData]);
+  useEffect(() => {
+    !!make && handleValueChange('projectId', projectId);
+  }, [projectId]);
 
   useEffect(() => {
     !isEmpty(defaultValues) && formData?.reset(defaultValues);
@@ -99,21 +98,16 @@ const AssetsForm = ({
         columnSpacing={2}
         {...gridContainerProps}
       >
-        {!removeFields?.includes('ssn') && !isUpdate &&
+        {!removeFields?.includes('ssn') && !isUpdate && (
           <Grid {...gridItemSize} item>
-            <InputField
-              required
-              {...commonInputProps}
-              name='ssn'
-              label='SSN'
-            />
+            <InputField required {...commonInputProps} name="ssn" label="SSN" />
           </Grid>
-        }
+        )}
 
         <Grid {...gridItemSize} item>
           <SearchSelect
             // required
-            name='make'
+            name="make"
             searchSelectData={makes}
             {...commonInputProps}
             onChange={handleValueChange}
@@ -124,46 +118,43 @@ const AssetsForm = ({
         <Grid {...gridItemSize} item>
           <SearchSelect
             // required
-            name='model'
+            name="model"
             searchSelectData={modelList}
-            disabled={!!!modelList?.length}
+            disabled={!modelList?.length}
             {...commonInputProps}
             returnLabel={returnLabel}
           />
         </Grid>
 
-        {isUpdate &&
+        {isUpdate && (
           <Grid {...gridItemSize} item>
             <SearchSelect
               // required
-              name='product'
+              name="product"
               searchSelectData={makes}
               {...commonInputProps}
               returnLabel={returnLabel}
             />
           </Grid>
-        }
+        )}
 
         <Grid {...gridItemSize} item>
           <InputField
             // required
             {...commonInputProps}
-            name='serialNo'
+            name="serialNo"
           />
         </Grid>
 
-        <Grid {...gridItemSize} item>
+        {/* <Grid {...gridItemSize} item>
           <InputField
             {...commonInputProps}
             name='barcode'
           />
-        </Grid>
+        </Grid> */}
 
         <Grid {...gridItemSize} item>
-          <InputField
-            {...commonInputProps}
-            name='clientRef'
-          />
+          <InputField {...commonInputProps} name="clientRef" />
         </Grid>
 
         {/* <Grid {...gridItemSize} item>
@@ -174,22 +165,19 @@ const AssetsForm = ({
         </Grid> */}
 
         <Grid {...gridItemSize} item>
-          <InputField
-            {...commonInputProps}
-            name='clientAssetTag'
-          />
+          <InputField {...commonInputProps} name="clientAssetTag" />
         </Grid>
 
-        {isUpdate &&
+        {isUpdate && (
           <Grid {...gridItemSize} item>
             <InputField
               format={numberOnly}
               {...commonInputProps}
-              name='buyPrice'
-              startAdornment='$'
+              name="buyPrice"
+              startAdornment="$"
             />
           </Grid>
-        }
+        )}
 
         {/* <Grid {...gridItemSize} item>
           <InputField
@@ -254,7 +242,7 @@ const AssetsForm = ({
             name='reservationComment'
           />
         </Grid> */}
-{/*
+        {/*
         <Grid
           {...gridItemSize}
           item
@@ -359,42 +347,42 @@ const AssetsForm = ({
           />
         </Grid> */}
 
-        {isUpdate &&
+        {isUpdate && (
           <Grid {...gridItemSize} item>
             <SearchSelect
               // required
-              name='assetStatus'
-              label='Status'
+              name="assetStatus"
+              label="Status"
               searchSelectData={assetStatus}
               {...commonInputProps}
               returnLabel={returnLabel}
             />
           </Grid>
-        }
+        )}
 
         <Grid {...gridItemSize} item>
           <SearchSelect
             required
-            name='itemType'
-            label='Type'
+            name="itemType"
+            label="Type"
             searchSelectData={itemTypes}
             {...commonInputProps}
             returnLabel={returnLabel}
           />
         </Grid>
 
-        {!removeFields?.includes('warehouse') &&
+        {!removeFields?.includes('warehouse') && (
           <Grid {...gridItemSize} item>
             <SearchSelect
               required
-              name='warehouse'
+              name="warehouse"
               searchSelectData={warehouses}
               {...commonInputProps}
               returnLabel={returnLabel}
             />
           </Grid>
-        }
-{/*
+        )}
+        {/*
         <Grid {...gridItemSize} item>
           <SearchSelect
             required
@@ -411,14 +399,11 @@ const AssetsForm = ({
           />
         </Grid> */}
 
-        {!removeFields?.includes('palletNo') &&
+        {!removeFields?.includes('palletNo') && (
           <Grid {...gridItemSize} item>
-            <InputField
-              {...commonInputProps}
-              name='palletNo'
-            />
+            <InputField {...commonInputProps} name="palletNo" />
           </Grid>
-        }
+        )}
 
         <CustomerProjectSelectors
           formData={formData}
@@ -430,18 +415,18 @@ const AssetsForm = ({
           returnLabel={returnLabel}
         />
 
-        {!removeFields?.includes('load') &&
+        {!removeFields?.includes('load') && (
           <Grid {...gridItemSize} item>
             <SearchSelect
               required
-              name='load'
+              name="load"
               searchSelectData={loadList}
-              disabled={!!!loadList?.length}
+              disabled={!loadList?.length}
               {...commonInputProps}
               returnLabel={returnLabel}
             />
           </Grid>
-        }
+        )}
 
         {/* <Grid {...gridItemSize} item>
           <Selector
@@ -465,6 +450,6 @@ const AssetsForm = ({
       </Grid>
     </>
   );
-}
+};
 
 export default AssetsForm;

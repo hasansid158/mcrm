@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const commonSlice = createSlice({
   name: 'common',
@@ -13,7 +13,9 @@ const commonSlice = createSlice({
   },
   reducers: {
     setErrorDialogText: (state, action) => {
-      const defaultMsg = (action.payload === '' || action.payload === undefined) && 'Server error occurred, please try again.'
+      const defaultMsg =
+        (action.payload === '' || action.payload === undefined) &&
+        'Server error occurred, please try again.';
       state.errorDialogText = defaultMsg || action.payload;
     },
 
@@ -26,9 +28,10 @@ const commonSlice = createSlice({
 
     toggleSideDrawer: (state, action) => {
       const { payload } = action;
-      state.sideDrawerOpen = payload === undefined ? !state.sideDrawerOpen : payload;
+      state.sideDrawerOpen =
+        payload === undefined ? !state.sideDrawerOpen : payload;
     },
-  }
+  },
 });
 
 export const {

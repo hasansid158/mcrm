@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import useReactForm from "hooks/useReactForm";
+import React, { useState, useEffect } from 'react';
+import useReactForm from 'hooks/useReactForm';
 
+import DialogBox from 'common/dataDisplay/dialogBox/DialogBox';
+import PaperBox from 'common/ui/PaperBox';
 
-import DialogBox from "common/dataDisplay/dialogBox/DialogBox";
-import PaperBox from "common/ui/PaperBox";
+import { useDispatch, useSelector } from 'react-redux';
+import { setErrorDialogText } from 'redux/slices/commonSlice/commonSlice';
+import { setSnackBar } from 'redux/slices/commonSlice/commonSlice';
 
-import { useDispatch, useSelector } from "react-redux";
-import { setErrorDialogText } from "redux/slices/commonSlice/commonSlice";
-import { setSnackBar } from "redux/slices/commonSlice/commonSlice";
-
-import formComponentsEnum from "enum/formComponentsEnum";
+import formComponentsEnum from 'enum/formComponentsEnum';
 
 const CreateDialog = ({
   isDialogOpen,
@@ -22,14 +21,10 @@ const CreateDialog = ({
   ...rest
 }) => {
   const dispatch = useDispatch();
-  const { userAccount } = useSelector(state => state?.userDetails);
+  const { userAccount } = useSelector((state) => state?.userDetails);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    formData,
-    handleSubmit,
-    reset
-  } = useReactForm(preFillData ?? {});
+  const { formData, handleSubmit, reset } = useReactForm(preFillData ?? {});
 
   // useEffect(() => {
   //   formData?.setValue('accountId', userAccount?.accountId);
@@ -43,24 +38,30 @@ const CreateDialog = ({
   const onSubmit = async (data, isReset = false) => {
     setIsLoading(true);
 
-    let updatedData = preFillData ? {...preFillData, ...data} : data;
-    updatedData = {...updatedData, accountId: userAccount?.accountId };
+    let updatedData = preFillData ? { ...preFillData, ...data } : data;
+    updatedData = { ...updatedData, accountId: userAccount?.accountId };
 
-    const res = await dispatch(formComponentsEnum()?.[formKey]?.createApi(updatedData));
+    const res = await dispatch(
+      formComponentsEnum()?.[formKey]?.createApi(updatedData),
+    );
 
     if (res?.error) {
-      const errorMsg = res?.payload?.title || 'Server error occurred, please try again.';
+      const errorMsg =
+        res?.payload?.title || 'Server error occurred, please try again.';
       dispatch(setErrorDialogText(errorMsg));
       setIsLoading(false);
       return;
     }
 
-    createFormProps?.callback && await createFormProps?.callback(res?.payload, data);
+    createFormProps?.callback &&
+      (await createFormProps?.callback(res?.payload, data));
 
-    dispatch(setSnackBar({
-      open: true,
-      message: `${label} has been created sucessfully`,
-    }));
+    dispatch(
+      setSnackBar({
+        open: true,
+        message: `${label} has been created sucessfully`,
+      }),
+    );
 
     setIsLoading(false);
 
@@ -81,15 +82,15 @@ const CreateDialog = ({
         handleClose();
       }}
       loading={isLoading}
-      maxWidth='md'
+      maxWidth="md"
       {...createFormProps}
       {...rest}
-
     >
-      <PaperBox
-        sx={{ px: 1 }}
-      >
-        {formComponentsEnum({formData: formData}, handleClose)?.[formKey]?.createForm}
+      <PaperBox sx={{ px: 1 }}>
+        {
+          formComponentsEnum({ formData: formData }, handleClose)?.[formKey]
+            ?.createForm
+        }
       </PaperBox>
     </DialogBox>
   );

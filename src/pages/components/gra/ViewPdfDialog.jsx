@@ -4,7 +4,7 @@ import DialogBox from 'common/dataDisplay/dialogBox/DialogBox';
 import PaperBox from 'common/ui/PaperBox';
 import useScreenSize from 'hooks/useScreenSize';
 
-import usePdf from 'hooks/usePdf';
+import { downloadPdf, ViewPdf, openPdf } from 'utils/pdfUtils';
 
 import { Button } from '@mui/material';
 
@@ -15,11 +15,10 @@ const ViewPdfDialog = ({
   pdfTitle = '',
 }) => {
   const { isTablet } = useScreenSize();
-  const { downloadPdf, ViewPdf, openPdf } = usePdf(pdfTemplate);
 
   useEffect(() => {
-    if(isTablet && open) {
-      openPdf();
+    if (isTablet && open) {
+      openPdf(pdfTemplate);
       handleClose();
     }
   }, [open]);
@@ -28,17 +27,17 @@ const ViewPdfDialog = ({
     <DialogBox
       open={open}
       handleClose={handleClose}
-      maxWidth='md'
+      maxWidth="md"
       sx={{
         '& .MuiDialogContent-root': {
           overflowY: 'unset',
-        }
+        },
       }}
       footerItems={
         <Button
-          variant='contained'
-          size='small'
-          onClick={() => downloadPdf(pdfTitle)}
+          variant="contained"
+          size="small"
+          onClick={() => downloadPdf(pdfTemplate, pdfTitle)}
         >
           Download
         </Button>
@@ -50,10 +49,10 @@ const ViewPdfDialog = ({
           my: 1,
         }}
       >
-        <ViewPdf/>
+        <ViewPdf template={pdfTemplate} />
       </PaperBox>
     </DialogBox>
   );
-}
+};
 
 export default ViewPdfDialog;

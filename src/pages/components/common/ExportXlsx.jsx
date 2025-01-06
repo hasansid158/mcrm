@@ -13,6 +13,7 @@ const ExportXlsx = ({
   isButton,
   name,
   buttonProps,
+  exportAsCsv = true,
 }) => {
 
   const handleDownload = () => {
@@ -28,12 +29,23 @@ const ExportXlsx = ({
     // Create a worksheet
     const worksheet = XLSX.utils.json_to_sheet(data);
 
-    // Create a workbook and add the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-
-    // Generate and download the file
-    XLSX.writeFile(workbook, name ? name+'.xlsx' : 'table_data.xlsx');
+    if (exportAsCsv) {
+      // Export as CSV
+      const csv = XLSX.utils.sheet_to_csv(worksheet);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', name ? `${name}.csv` : 'table_data.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // Export as XLSX
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+      XLSX.writeFile(workbook, name ? `${name}.xlsx` : 'table_data.xlsx');
+    }
   };
 
   return (

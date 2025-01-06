@@ -281,7 +281,6 @@ export default function Platform() {
               <Paper
                 elevation={3}
                 sx={{
-                  padding: 2,
                   boxShadow: "none",
                   padding: "24px 28px",
                 }}

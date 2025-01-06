@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchAdminPermissions } from "redux/slices/consoleAdministration/permissionSlice";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchAdminPermissions } from 'redux/slices/consoleAdministration/permissionSlice';
 
 import {
   fetchAssetStatus,
@@ -20,10 +20,10 @@ import {
   fetchQuoteStatusList,
   fetchAllStatusList,
   // fetchAllServiceItems
-} from "redux/slices/listSlice/listSlice";
+} from 'redux/slices/listSlice/listSlice';
 
-import { fetchUserDetails } from "redux/slices/userSlice/userDetailsSlice";
-import { fetchAdminUserRolePermissions } from "redux/slices/consoleAdministration/userRolePermissions";
+import { fetchUserDetails } from 'redux/slices/userSlice/userDetailsSlice';
+import { fetchAdminUserRolePermissions } from 'redux/slices/consoleAdministration/userRolePermissions';
 
 const ApiInitiator = () => {
   const dispatch = useDispatch();
@@ -33,8 +33,8 @@ const ApiInitiator = () => {
     dispatch(fetchUserDetails());
 
     // console admin
-    dispatch(fetchAdminPermissions())
-    dispatch(fetchAdminUserRolePermissions())
+    dispatch(fetchAdminPermissions());
+    dispatch(fetchAdminUserRolePermissions());
 
     //fetch selector lists
     //Need to move this to be only called when we need instead of on load
@@ -55,7 +55,6 @@ const ApiInitiator = () => {
     dispatch(fetchQuoteStatusList());
     dispatch(fetchAllStatusList());
     // dispatch(fetchAllServiceItems())
-
   }, []);
 };
 

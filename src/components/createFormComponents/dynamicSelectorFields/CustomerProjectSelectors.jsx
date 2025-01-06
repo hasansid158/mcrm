@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Grid } from '@mui/material';
 import SearchSelect from 'common/input/SearchSelect';
@@ -22,13 +22,23 @@ const CustomerProjectSelectors = ({
   loading = false,
   returnLabel = false,
 }) => {
-  const { userProjects = [], userCustomers = [] } = useSelector(state => state?.userDetails);
+  const { userProjects = [], userCustomers = [] } = useSelector(
+    (state) => state?.userDetails,
+  );
 
   useEffect(() => {
-    if (userCustomers?.length <= 1 && !noCustomer && !formData?.getValues(customerName)) {
+    if (
+      userCustomers?.length <= 1 &&
+      !noCustomer &&
+      !formData?.getValues(customerName)
+    ) {
       formData?.setValue(customerName, userCustomers?.[0]?.id || null);
     }
-    if (userProjects?.length <= 1 && !noProject && !formData?.getValues(projectName)) {
+    if (
+      userProjects?.length <= 1 &&
+      !noProject &&
+      !formData?.getValues(projectName)
+    ) {
       formData?.setValue(projectName, userProjects?.[0]?.id || null);
     }
   }, [userProjects, userCustomers, formData]);
@@ -48,27 +58,36 @@ const CustomerProjectSelectors = ({
 
   return (
     <>
-      {(!noCustomer && userCustomers?.length > 1) &&
+      {!noCustomer &&
+        userCustomers?.length > 1 &&
         (noGrid ? (
           renderSelect(customerName, customerLabel, userCustomers)
         ) : (
           <Grid item sm={sm} md={md} xs={xs}>
-            {renderSelect(customerName, customerLabel, userCustomers, onCustomerChange)}
+            {renderSelect(
+              customerName,
+              customerLabel,
+              userCustomers,
+              onCustomerChange,
+            )}
           </Grid>
-        ))
-      }
-      {(!noProject && userProjects?.length > 1) &&
+        ))}
+      {!noProject &&
+        userProjects?.length > 1 &&
         (noGrid ? (
           renderSelect(projectName, projectLabel, userProjects)
         ) : (
           <Grid item sm={sm} md={md} xs={xs}>
-            {renderSelect(projectName, projectLabel, userProjects, onProjectChange)}
+            {renderSelect(
+              projectName,
+              projectLabel,
+              userProjects,
+              onProjectChange,
+            )}
           </Grid>
-        ))
-      }
+        ))}
     </>
   );
 };
-
 
 export default CustomerProjectSelectors;

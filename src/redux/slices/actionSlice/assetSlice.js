@@ -1,58 +1,71 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   getAllAssets,
   createAsset,
   createBulkAsset,
+  assetImport,
   updateAssets,
-} from "api/masterApi";
+} from 'api/masterApi';
 
-import { isEmpty } from "lodash";
+import { isEmpty } from 'lodash';
 
-import { replaceObjectsInArray } from "utils/helperFunctions";
+import { replaceObjectsInArray } from 'utils/helperFunctions';
 
 export const fetchAllAssets = createAsyncThunk(
-  "actions/fetchAllAssets",
-  async () => await getAllAssets()
+  'actions/fetchAllAssets',
+  async () => await getAllAssets(),
 );
 
 export const addAsset = createAsyncThunk(
-  "actions/addAsset",
+  'actions/addAsset',
   async (data, { rejectWithValue }) => {
     try {
       await createAsset(data);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data)
+      return rejectWithValue(err.response.data);
     }
-  }
+  },
 );
 
 export const addBulkAssets = createAsyncThunk(
-  "actions/addBulkAssets",
+  'actions/addBulkAssets',
   async (data, { rejectWithValue }) => {
     try {
       const res = await createBulkAsset(data);
       return res;
     } catch (err) {
-      return rejectWithValue(err.response.data)
+      return rejectWithValue(err.response.data);
     }
-  }
+  },
+);
+
+export const importAssets = createAsyncThunk(
+  'actions/importAssets',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await assetImport(data);
+      return res;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  },
 );
 
 export const updateAssetValue = createAsyncThunk(
-  "actions/updateAssetValue",
+  'actions/updateAssetValue',
   async (data, { rejectWithValue }) => {
     try {
       await updateAssets(data);
       return data;
     } catch (err) {
-      return rejectWithValue(err.response.data)
+      return rejectWithValue(err.response.data);
     }
-  }
+  },
 );
 
 export const assetSlice = createSlice({
-  name: "assets",
+  name: 'assets',
   initialState: [],
   reducers: {
     updateAssetItem: (state, action) => {
@@ -61,10 +74,7 @@ export const assetSlice = createSlice({
       return updatedAssets;
     },
     updateAssetsWithIndex: (state, action) => {
-      const {
-        item = {},
-        index,
-      } = action.payload;
+      const { item = {}, index } = action.payload;
 
       if (isEmpty(item)) return;
 
@@ -72,11 +82,11 @@ export const assetSlice = createSlice({
       updatedAssets[index] = item;
 
       return updatedAssets;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllAssets.fulfilled, (state, action) => {
-      const updatedAssets = action.payload?.map((asset, idx) => ({
+      const updatedAssets = action.payload?.map((asset) => ({
         // id: idx + state?.length,
         ...asset,
         // project: {id: 1, value: 'MasterCRM1'},
@@ -90,7 +100,7 @@ export const assetSlice = createSlice({
       const updatedAssets = {
         id: state?.length,
         ...action.payload,
-      }
+      };
       state.unshift(updatedAssets);
     });
 
@@ -108,11 +118,18 @@ export const assetSlice = createSlice({
       }));
       state.unshift(...dataWithId);
     });
+
+    builder.addCase(importAssets.fulfilled, (state, action) => {
+      const data = action.payload;
+
+      // const dataWithId = data?.map((asset, idx) => ({
+      //   id: idx + state.length,
+      //   ...asset,
+      // }));
+      state.unshift(...data);
+    });
   },
 });
 
-export const {
-  updateAssetsWithIndex,
-  updateAssetItem,
-} = assetSlice.actions;
+export const { updateAssetsWithIndex, updateAssetItem } = assetSlice.actions;
 export default assetSlice.reducer;

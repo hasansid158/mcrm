@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { isArray, isNil, trimEnd } from 'lodash';
 
-import {
-  Typography,
-  Button,
-  Box,
-  MenuItem,
-} from '@mui/material';
+import { Typography, Button, Box, MenuItem } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
@@ -92,12 +87,10 @@ const ActionPageMain = ({
   }, [updateEditRowData]);
 
   useEffect(() => {
-    setIsDetailsFetchByApi((!!detailDataFetchIdKey && !!pagePath && !!fetchByIdApi));
-  }, [
-    detailDataFetchIdKey,
-    pagePath,
-    fetchByIdApi,
-  ]);
+    setIsDetailsFetchByApi(
+      !!detailDataFetchIdKey && !!pagePath && !!fetchByIdApi,
+    );
+  }, [detailDataFetchIdKey, pagePath, fetchByIdApi]);
 
   const url = window.location.pathname;
   const currentPage = url.split('/')[2] || '';
@@ -108,19 +101,23 @@ const ActionPageMain = ({
     if (!editRow?.[detailDataFetchIdKey]) {
       if (!isDetailsFetchByApi || !id || isNotPagePathUrl) {
         setDrawerLoading(false);
-        return
-      };
+        return;
+      }
     }
 
     setDrawerLoading(true);
 
     fetchByIdApi(isNotPagePathUrl ? editRow?.[detailDataFetchIdKey] : id)
-      ?.then(res => {
+      ?.then((res) => {
         clickRowData(res);
         setDrawerData(res);
         onDetailDataFetch(res);
       })
-      ?.catch(() => dispatch(setErrorDialogText('Error while fetching data, please try again')))
+      ?.catch(() =>
+        dispatch(
+          setErrorDialogText('Error while fetching data, please try again'),
+        ),
+      )
       ?.finally(() => setDrawerLoading(false));
   }, [id, isDetailsFetchByApi, editRow]);
 
@@ -129,16 +126,16 @@ const ActionPageMain = ({
     setLoading(true);
 
     const callFetch = async () => {
-      (!fetchedData?.length && !rows?.length) && await dispatch(fetchApi());
+      !fetchedData?.length && !rows?.length && (await dispatch(fetchApi()));
       setLoading(false);
-    }
+    };
     callFetch();
   }, []);
 
   return (
     <>
-      {!formsOnly &&
-        <Box sx={{height: '100%'}}>
+      {!formsOnly && (
+        <Box sx={{ height: '100%' }}>
           <PaperBox
             sx={{
               display: 'flex',
@@ -147,31 +144,31 @@ const ActionPageMain = ({
               rowGap: 2,
               columnGap: 1,
               py: 1,
-              mb: .5,
+              mb: 0.5,
               minHeight: 0,
               backgroundColor: 'white',
             }}
           >
             <Box
-              display='flex'
-              alignItems='center'
-              justifyContent='space-between'
-              width='100%'
-              flexWrap='wrap'
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              width="100%"
+              flexWrap="wrap"
               columnGap={1}
               rowGap={2}
             >
               <Box
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-                flexWrap='wrap'
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexWrap="wrap"
                 gap={2}
               >
                 <Typography
-                  component='span'
-                  variant='h5'
-                  sx={{alignSelf: 'center'}}
+                  component="span"
+                  variant="h5"
+                  sx={{ alignSelf: 'center' }}
                 >
                   {label}
                 </Typography>
@@ -179,11 +176,11 @@ const ActionPageMain = ({
               </Box>
 
               <Box
-                display='flex'
-                flexWrap='wrap'
+                display="flex"
+                flexWrap="wrap"
                 columnGap={2}
                 rowGap={1}
-                justifyContent='center'
+                justifyContent="center"
               >
                 <Box
                   display="flex"
@@ -191,78 +188,75 @@ const ActionPageMain = ({
                   justifyContent="center"
                   rowGap={2}
                   columnGap={2}
-                  alignItems='flex-start'
+                  alignItems="flex-start"
                 >
                   {children}
                 </Box>
 
-                {isArray(extraButtons) && extraButtons?.length
-                  ?
-                    <Button
-                      size='small'
-                      variant='contained'
-                      onClick={e => setExtraButtonAnchor(e.currentTarget)}
-                      endIcon={
-                        <KeyboardArrowDownRoundedIcon
-                          sx={{
-                            scale: '1.2',
-                            rotate: extraButtonAnchor ? 'x 180deg' : '',
-                            transition: transitions().common,
-                          }}
-                        />
-                      }
-                      color='secondary'
-                      sx={{minWidth: '140px'}}
-                    >
-                      Actions
-                    </Button>
-                  :
-                    extraButtons
-                }
-                {isArray(extraButtons) &&
+                {isArray(extraButtons) && extraButtons?.length ? (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={(e) => setExtraButtonAnchor(e.currentTarget)}
+                    endIcon={
+                      <KeyboardArrowDownRoundedIcon
+                        sx={{
+                          scale: '1.2',
+                          rotate: extraButtonAnchor ? 'x 180deg' : '',
+                          transition: transitions().common,
+                        }}
+                      />
+                    }
+                    color="secondary"
+                    sx={{ minWidth: '140px' }}
+                  >
+                    Actions
+                  </Button>
+                ) : (
+                  extraButtons
+                )}
+                {isArray(extraButtons) && (
                   <PopperMenu
                     open={!!extraButtonAnchor}
                     anchorEl={extraButtonAnchor}
                     onClickAway={() => setExtraButtonAnchor(null)}
-                    placement='bottom'
+                    placement="bottom"
                     popperSx={{ zIndex: 1220 }}
                   >
                     {extraButtons?.map((buttonComponent, key) => (
-                      <MenuItem key={key}>
-                        {buttonComponent}
-                      </MenuItem>
+                      <MenuItem key={key}>{buttonComponent}</MenuItem>
                     ))}
                   </PopperMenu>
-                }
+                )}
 
-                {!!formKey && (!disableAddUpdate && !removeCreateButton) &&
+                {!!formKey && !disableAddUpdate && !removeCreateButton && (
                   <Button
-                    variant='contained'
-                    size='small'
+                    variant="contained"
+                    size="small"
                     // variant='outlined'
-                    color='primary'
+                    color="primary"
                     // size='small'
                     onClick={() => setIsCreateOpen(true)}
-                    startIcon={<AddIcon/>}
-                    sx={{minWidth: '140px'}}
+                    startIcon={<AddIcon />}
+                    sx={{ minWidth: '140px' }}
                   >
                     {createButtonLabel || 'Add'}
                   </Button>
-                }
+                )}
               </Box>
             </Box>
-
-
           </PaperBox>
 
           <PaperBox
             sx={{
-              py: 0, px: 0, pb: 2,
+              py: 0,
+              px: 0,
+              pb: 2,
               backgroundColor: 'white',
             }}
           >
             {contentAboveTable && contentAboveTable}
-            {!replaceContent ?
+            {!replaceContent ? (
               <ActionPageTable
                 columns={columns}
                 rows={rows}
@@ -272,15 +266,14 @@ const ActionPageMain = ({
                 label={label}
                 formKey={formKey}
                 setIsCreateOpen={setIsCreateOpen}
-                setEditRow={row => {
+                setEditRow={(row) => {
                   setDrawerLoading(true);
-                  const {
-                    id,
-                    ...rowData
-                  } = row;
+                  const { id, ...rowData } = row;
                   clickRowData(rowData);
                   setEditRow(rowData);
-                  (!isNotPagePathUrl && isDetailsFetchByApi) && nav(`/crm/${pagePath}/${row?.[detailDataFetchIdKey]}`);
+                  !isNotPagePathUrl &&
+                    isDetailsFetchByApi &&
+                    nav(`/crm/${pagePath}/${row?.[detailDataFetchIdKey]}`);
                 }}
                 preFillUpdateData={preFillUpdateData}
                 tableActionItem={tableActionItem}
@@ -294,38 +287,42 @@ const ActionPageMain = ({
                 disableIdAction={disableIdAction}
                 {...tableProps}
               />
-              : <>{replaceContent}</>
-            }
+            ) : (
+              <>{replaceContent}</>
+            )}
           </PaperBox>
         </Box>
-      }
+      )}
 
-      {customCreateDialog ? customCreateDialog : isMultiAdd
-        ? <CreateMultiDialog
-            isDialogOpen={isCreateOpen}
-            handleClose={() => {
-              setIsCreateOpen(false);
-              createFormProps?.handleClose && createFormProps?.handleClose();
-            }}
-            formKey={formKey}
-            title={createLabel}
-            label={label}
-            preFillData={preFillData}
-            createFormProps={createFormProps}
-          />
-        : <CreateDialog
-            isDialogOpen={isCreateOpen}
-            handleClose={() => {
-              setIsCreateOpen(false);
-              createFormProps?.handleClose && createFormProps?.handleClose();
-            }}
-            formKey={formKey}
-            title={createLabel}
-            label={label}
-            preFillData={preFillData}
-            createFormProps={createFormProps}
-          />
-      }
+      {customCreateDialog ? (
+        customCreateDialog
+      ) : isMultiAdd ? (
+        <CreateMultiDialog
+          isDialogOpen={isCreateOpen}
+          handleClose={() => {
+            setIsCreateOpen(false);
+            createFormProps?.handleClose && createFormProps?.handleClose();
+          }}
+          formKey={formKey}
+          title={createLabel}
+          label={label}
+          preFillData={preFillData}
+          createFormProps={createFormProps}
+        />
+      ) : (
+        <CreateDialog
+          isDialogOpen={isCreateOpen}
+          handleClose={() => {
+            setIsCreateOpen(false);
+            createFormProps?.handleClose && createFormProps?.handleClose();
+          }}
+          formKey={formKey}
+          title={createLabel}
+          label={label}
+          preFillData={preFillData}
+          createFormProps={createFormProps}
+        />
+      )}
 
       <DetailsDrawer
         open={!isNil(editRow) || !isNil(drawerData)}
@@ -334,7 +331,7 @@ const ActionPageMain = ({
           clickRowData(null);
           setDrawerData(null);
           handleDrawerClose();
-          (!isNotPagePathUrl && isDetailsFetchByApi) && nav(`/crm/${pagePath}`);
+          !isNotPagePathUrl && isDetailsFetchByApi && nav(`/crm/${pagePath}`);
         }}
         data={drawerData || preFillUpdateData || editRow}
         formKey={formKey}
@@ -348,6 +345,6 @@ const ActionPageMain = ({
       </DetailsDrawer>
     </>
   );
-}
+};
 
-export default ActionPageMain;
+export default memo(ActionPageMain);

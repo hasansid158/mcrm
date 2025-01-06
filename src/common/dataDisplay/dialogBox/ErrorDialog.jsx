@@ -1,45 +1,35 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import DialogBox from './DialogBox'
-import { Box, Button } from '@mui/material'
+import DialogBox from './DialogBox';
+import { Box, Button } from '@mui/material';
+import PaperBox from 'common/ui/PaperBox';
 
-import { setErrorDialogText } from 'redux/slices/commonSlice/commonSlice'
+import { setErrorDialogText } from 'redux/slices/commonSlice/commonSlice';
+
+import parse from 'html-react-parser';
 
 export default function ErrorDialog() {
   const dispatch = useDispatch();
-  const { errorDialogText } = useSelector(state => state.common)
+  const { errorDialogText } = useSelector((state) => state.common);
 
-  return !!errorDialogText ? (
+  return errorDialogText ? (
     <DialogBox
       open
       handleClose={() => dispatch(setErrorDialogText(null))}
-      maxWidth="xs"
+      maxWidth="sm"
       disableFormFooter
-      title={
-        <Box color='common.error'>Error</Box>
-      }
-      isGrey
+      title={<Box color="common.error">Error</Box>}
       sx={{ zIndex: 99999999 }}
     >
-      <Box
-        px={1}
-        py={2}
-        borderRadius={1}
-        backgroundColor='white'
-      >
-        {errorDialogText}
-      </Box>
+      <PaperBox>{parse(errorDialogText || '')}</PaperBox>
 
-      <Box
-        mt='20px'
-        pb={2}
-      >
+      <Box mt="20px">
         <Button
           onClick={() => dispatch(setErrorDialogText(null))}
           fullWidth
-          variant='outlined'
-          color='secondary'
+          variant="outlined"
+          color="secondary"
         >
           OK
         </Button>

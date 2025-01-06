@@ -1,146 +1,242 @@
-import React, { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import * as XLSX from 'xlsx';
+import React, { useState, useCallback } from 'react';
 
-const predefinedColumns = {
-  SSN: { dataType: 'string', required: true },
-  Name: { dataType: 'string', required: true },
-  Age: { dataType: 'number', required: true, min: 0 },
-  Email: { dataType: 'string', required: false },
-  IsActive: { dataType: 'boolean', required: false },
-};
+import { useSelector, useDispatch } from 'react-redux';
 
-function validateAndTransformRow(row, mappedColumns) {
-  const transformedRow = {};
-  for (const [key, config] of Object.entries(predefinedColumns)) {
-      const sourceColumn = mappedColumns[key];
-      const value = row[sourceColumn];
+import DialogBox from 'common/dataDisplay/dialogBox/DialogBox';
+import FileImport from 'common/input/fileImport/FileImport';
+import PaperBox from 'common/ui/PaperBox';
 
-      // Validation
-      if (config.required && (value === undefined || value === null || value === '')) {
-          throw new Error(`Missing required field: ${key}`);
-      }
+import { Box, Grid, Typography } from '@mui/material';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
-      // Data Type Validation
-      if (value !== undefined) {
-          switch (config.dataType) {
-              case 'string':
-                  transformedRow[key] = String(value);
-                  break;
-              case 'number':
-                  if (isNaN(value)) throw new Error(`Invalid number for field: ${key}`);
-                  transformedRow[key] = Number(value);
-                  break;
-              case 'boolean':
-                  transformedRow[key] = value === 'true' || value === true;
-                  break;
-              default:
-                  transformedRow[key] = value;
-          }
-      }
-  }
-  return transformedRow;
-}
+import { parseCsvXlsx } from 'utils/fileHelperFunctions';
+import { isEmpty, keys } from 'lodash';
 
+import ConfirmDialog from 'common/dataDisplay/dialogBox/ConfirmDialog';
+import DividerLine from 'common/ui/DividerLine';
+import SearchSelect from 'common/input/SearchSelect';
+import { arrayToValueLabel } from 'utils/helperFunctions';
+import InputField from 'common/input/InputField';
+import SpinLoader from 'common/dataDisplay/spinLoader/SpinLoader';
+import {
+  setErrorDialogText,
+  setSnackBar,
+} from 'redux/slices/commonSlice/commonSlice';
 
-const CustomImport = () => {
-    const [fileData, setFileData] = useState([]);
-    const [headers, setHeaders] = useState([]);
-    const [mappedColumns, setMappedColumns] = useState({});
-    const [errors, setErrors] = useState([]);
+import useReactForm from 'hooks/useReactForm';
+import { updateImportData } from './updateImportData';
 
-    const predefinedColumns = {
-        SSN: { dataType: 'string', required: true },
-        Name: { dataType: 'string', required: true },
-        Age: { dataType: 'number', required: true },
-        Email: { dataType: 'string', required: false },
-        IsActive: { dataType: 'boolean', required: false },
-    };
+export default function CustomImport({
+  isOpen = false,
+  setIsOpen = () => {},
+  internalImportFields = [
+    {
+      name: 'string',
+      label: 'string',
+      type: 'string',
+      required: true,
+    },
+  ],
+  setMapFields = () => {},
+  dispatchApi = () => {},
+}) {
+  const dispatch = useDispatch();
+  const [isConfirmCloseOpen, setIsConfirmCloseOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-    const handleFileUpload = (file) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const binaryStr = e.target.result;
-            const workbook = XLSX.read(binaryStr, { type: 'binary' });
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  const [parsedFileData, setParsedFileData] = useState([]);
+  const [importedColumnList, setImportedColumnList] = useState([]);
 
-            setHeaders(jsonData[0]); // First row as headers
-            setFileData(jsonData.slice(1)); // Remaining rows as data
-        };
-        reader.readAsBinaryString(file);
-    };
+  const [loading, setLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
-    const onDrop = (acceptedFiles) => {
-        const file = acceptedFiles[0];
-        handleFileUpload(file);
-    };
+  const { userAccount } = useSelector((state) => state?.userDetails);
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { formData, handleSubmit, reset } = useReactForm({
+    accountId: userAccount?.accountId,
+  });
 
-    const validateAndMapData = () => {
-        try {
-            const mappedData = fileData.map((row) => {
-                return validateAndTransformRow(
-                    Object.fromEntries(headers.map((header, i) => [header, row[i]])),
-                    mappedColumns
-                );
-            });
-            console.log('Mapped Data:', mappedData);
-            setErrors([]);
-        } catch (error) {
-            setErrors([...errors, error.message]);
-        }
-    };
+  const handleFileUpdate = useCallback((file) => {
+    if (!file) return;
+    parseCsvXlsx(file, (fileData) => {
+      setParsedFileData(fileData || []);
+      const convertedToSelectorList = arrayToValueLabel(
+        keys(fileData?.[0] || {}) || [],
+      );
+      console.log(file, convertedToSelectorList);
+      setImportedColumnList(convertedToSelectorList || []);
+    });
+  }, []);
 
-    return (
-        <div>
-            <div>
-                <h3>Upload File</h3>
-                <div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px' }}>
-                    <input {...getInputProps()} />
-                    Drag & drop a file here, or click to select one
-                </div>
-            </div>
-            {headers.length > 0 && (
-                <div>
-                    <h3>Map Columns</h3>
-                    {Object.keys(predefinedColumns).map((col) => (
-                        <div key={col}>
-                            <label>{col}:</label>
-                            <select
-                                onChange={(e) =>
-                                    setMappedColumns({ ...mappedColumns, [col]: e.target.value })
-                                }
-                            >
-                                <option value="">Select column</option>
-                                {headers.map((header, index) => (
-                                    <option key={index} value={header}>
-                                        {header}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    ))}
-                </div>
-            )}
-            {fileData.length > 0 && (
-                <div>
-                    <button onClick={validateAndMapData}>Validate & Map</button>
-                </div>
-            )}
-            {errors.length > 0 && (
-                <div>
-                    <h4>Errors:</h4>
-                    <ul>
-                        {errors.map((error, index) => (
-                            <li key={index}>{error}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
+  const onSubmitConfirm = async (data) => {
+    //apply data merging here
+    setIsConfirmOpen(false);
+    setLoading(true);
+
+    const updatedData = await updateImportData(
+      parsedFileData,
+      data,
+      5,
+      (progress) => progress < 90 && setLoadingProgress(progress),
     );
-};
 
-export default CustomImport;
+    dispatch(dispatchApi(updatedData))
+      .unwrap()
+      ?.then(() => {
+        dispatch(
+          setSnackBar({
+            open: true,
+            message: `${updatedData?.length} items imported successfully!`,
+          }),
+        );
+        setIsOpen(false);
+      })
+      ?.catch((err) => {
+        console.log(err);
+        dispatch(
+          setErrorDialogText(
+            `Error occured while uploading data.<br />
+            One or more of the required fields were missing from the imported data, please check your data for required values and try again.`,
+          ),
+        );
+      })
+      ?.finally(() => {
+        setLoading(false);
+        setLoadingProgress(0);
+        setParsedFileData([]);
+        setImportedColumnList([]);
+        reset({});
+      });
+  };
+
+  const onSubmit = () => setIsConfirmOpen(true);
+
+  const MapField = useCallback(
+    ({ fieldData = {} }) => (
+      <>
+        <Grid item sm={5} xs={12}>
+          <SearchSelect
+            label={fieldData?.required ? 'Required' : ''}
+            noLabel={!fieldData?.required}
+            searchSelectData={importedColumnList}
+            required={fieldData?.required}
+            placeholder="Select column"
+            name={fieldData?.name}
+            formData={formData}
+            helperText="This is required"
+            defaultValue=""
+          />
+        </Grid>
+
+        <Grid item sm={2} xs={12} textAlign="center">
+          <ArrowRightAltIcon
+            sx={{
+              scale: '2',
+              fill: (theme) => `${theme.palette.primary.main}`,
+            }}
+          />
+        </Grid>
+
+        <Grid item sm={5} xs={12}>
+          <InputField readOnly value={fieldData?.label} />
+        </Grid>
+      </>
+    ),
+    [importedColumnList],
+  );
+
+  return (
+    <>
+      <DialogBox
+        open={isOpen && isEmpty(parsedFileData)}
+        title="Bulk Import"
+        handleClose={() => setIsOpen(false)}
+        maxWidth="sm"
+        disableFormFooter
+      >
+        <PaperBox>
+          <FileImport
+            maxFiles={1}
+            maxSizeInMBs={20}
+            acceptedFileTypes={{
+              application: ['.xlsx', '.csv'],
+            }}
+            setAllValidFiles={(file = []) =>
+              handleFileUpdate(file?.[0]?.fileContent)
+            }
+          />
+        </PaperBox>
+      </DialogBox>
+
+      <DialogBox
+        open={!isEmpty(parsedFileData)}
+        title="Import Field Mapping"
+        handleClose={() => setIsConfirmCloseOpen(true)}
+        disableSubmitNew
+        maxWidth="sm"
+        handleFormSubmit={() => handleSubmit(onSubmit)()}
+      >
+        <PaperBox sx={{ pb: 3 }}>
+          <Box mb={1}>
+            <Typography>
+              Map columns from your file to MasterCRM properties.
+              <br />
+              Fields which are left empty and are not required will be skipped.
+            </Typography>
+            <DividerLine color="primary.main" height="1px" sx={{ mt: 2 }} />
+          </Box>
+
+          <Box px={1}>
+            <Grid
+              container
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              spacing={2.5}
+              mt={0.5}
+              mb={1.5}
+            >
+              {internalImportFields?.map((field, key) => (
+                <MapField key={key} fieldData={field} />
+              ))}
+            </Grid>
+
+            <DividerLine height="1px" sx={{ pt: 1 }} />
+
+            <Box mt={3}>{setMapFields(formData)}</Box>
+          </Box>
+        </PaperBox>
+
+        <SpinLoader
+          loading={loading}
+          isProgress
+          progressText="We're processing your data. It should only take a few minutes. Hang tight!"
+          progressValue={loadingProgress}
+        />
+      </DialogBox>
+
+      <ConfirmDialog
+        open={isConfirmCloseOpen}
+        onCancel={() => setIsConfirmCloseOpen(false)}
+        onConfirm={() => {
+          setIsConfirmCloseOpen(false);
+          setIsOpen(true);
+          setParsedFileData([]);
+        }}
+      >
+        Are you sure you want to close the mapping dialog?
+        <br />
+        You&apos;ll have to upload the file again.
+      </ConfirmDialog>
+
+      <ConfirmDialog
+        open={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(false)}
+        onConfirm={() => handleSubmit(onSubmitConfirm)()}
+      >
+        Before we proceed with uploading and processing your data, have you
+        verified that all columns are selected correctly?
+      </ConfirmDialog>
+    </>
+  );
+}

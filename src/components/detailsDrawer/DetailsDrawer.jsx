@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { isEmpty, keys, values } from "lodash";
+import { isEmpty, keys, values } from 'lodash';
 
-import useReactForm from "hooks/useReactForm";
-import PaperBox from "common/ui/PaperBox";
-import useScreenSize from "hooks/useScreenSize";
-import DrawerHeader from "./DrawerHeader";
-import formComponentsEnum from "enum/formComponentsEnum";
-import TabsMenu from "common/dataDisplay/Tabs/TabsMenu";
+import useReactForm from 'hooks/useReactForm';
+import PaperBox from 'common/ui/PaperBox';
+import useScreenSize from 'hooks/useScreenSize';
+import DrawerHeader from './DrawerHeader';
+import formComponentsEnum from 'enum/formComponentsEnum';
+import TabsMenu from 'common/dataDisplay/Tabs/TabsMenu';
 
-import Drawer from "@mui/material/Drawer";
-import {Box, Typography, IconButton } from "@mui/material";
+import Drawer from '@mui/material/Drawer';
+import { Box, Typography, IconButton } from '@mui/material';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-import { isEqualCommonData } from "utils/helperFunctions";
-import { setErrorDialogText } from "redux/slices/commonSlice/commonSlice";
+import { isEqualCommonData } from 'utils/helperFunctions';
+import { setErrorDialogText } from 'redux/slices/commonSlice/commonSlice';
 
-import UpdateForm from "components/createFormComponents/UpdateForm";
+import UpdateForm from 'components/createFormComponents/UpdateForm';
 
-import { transitions } from "core/animations";
+import { transitions } from 'core/animations';
 
-import SpinLoader from "common/dataDisplay/spinLoader/SpinLoader";
+import SpinLoader from 'common/dataDisplay/spinLoader/SpinLoader';
 
-import DialogBox from "common/dataDisplay/dialogBox/DialogBox";
+import DialogBox from 'common/dataDisplay/dialogBox/DialogBox';
 
 const DetailsDrawer = ({
-  anchor = "right",
+  anchor = 'right',
   open = false,
   onClose = () => {},
   data = {},
   primaryName,
   subName,
-  formKey = "",
+  formKey = '',
   drawerLabel,
   handleUpdate = () => {},
   replaceUpdate,
@@ -103,19 +103,17 @@ const DetailsDrawer = ({
       setLoading(false);
 
       if (apiRes === false) {
-        dispatch(setErrorDialogText('Error fetching data, please try again later.'));
+        dispatch(
+          setErrorDialogText('Error fetching data, please try again later.'),
+        );
         onClose();
       }
-    }
+    };
 
     fetchCall();
   }, [open]);
 
-  const {
-    formData,
-    reset,
-    useWatch,
-  } = useReactForm();
+  const { formData, reset, useWatch } = useReactForm();
 
   useEffect(() => {
     if (isEmpty(data) || !open) return;
@@ -124,35 +122,43 @@ const DetailsDrawer = ({
     setCurrentData(open ? data : {});
   }, [data, open]);
 
-  const watchedData = useWatch({control: formData.control})
+  const watchedData = useWatch({ control: formData.control });
 
   useEffect(() => {
-    !dataChanged && setDataChanged(!isEqualCommonData(currentData, watchedData))
+    !dataChanged &&
+      setDataChanged(!isEqualCommonData(currentData, watchedData));
   }, [watchedData]);
 
-  if (isDialog) return (
-    <DialogBox
-      open={open}
-      handleClose={onClose}
-      loading={loading}
-      disableFormFooter
-      title={drawerLabel}
-    >
-      <PaperBox sx={{ px: 1 }}>
-        <UpdateForm
-          formKey={formKey}
-          data={currentData}
-          handleUpdate={handleUpdate}
-          replaceUpdate={replaceUpdate}
-          isUpdate={open}
-        />
-      </PaperBox>
-    </DialogBox>
-  )
+  if (isDialog)
+    return (
+      <DialogBox
+        open={open}
+        handleClose={onClose}
+        loading={loading}
+        disableFormFooter
+        title={drawerLabel}
+      >
+        <PaperBox sx={{ px: 1 }}>
+          <UpdateForm
+            formKey={formKey}
+            data={currentData}
+            handleUpdate={handleUpdate}
+            replaceUpdate={replaceUpdate}
+            isUpdate={open}
+          />
+        </PaperBox>
+      </DialogBox>
+    );
 
   const DrawerTopLabel = () => (
-    <Box mb={2} display='flex' alignItems='center' justifyContent='space-between' columnGap={1}>
-      {drawerLabel &&
+    <Box
+      mb={2}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      columnGap={1}
+    >
+      {drawerLabel && (
         <Box
           sx={{
             backgroundColor: 'common.backgroundDarkBlue',
@@ -164,26 +170,22 @@ const DetailsDrawer = ({
             p: '12px',
           }}
         >
-          <Typography variant='pb' color='white'>
+          <Typography variant="pb" color="white">
             {drawerLabel}
           </Typography>
         </Box>
-      }
+      )}
 
-      <Box display='flex' alignItems='center' columnGap={1}>
+      <Box display="flex" alignItems="center" columnGap={1}>
         <IconButton
-          size='small'
+          size="small"
           onClick={() => setIsExpended(!isExpended)}
-          color='secondary'
+          color="secondary"
         >
-          <OpenInFullIcon sx={{width: '22px', height: '22px'}}/>
+          <OpenInFullIcon sx={{ width: '22px', height: '22px' }} />
         </IconButton>
-        <IconButton
-          size='small'
-          onClick={onClose}
-          color='primary'
-        >
-          <CloseRoundedIcon sx={{width: '24px', height: '24px'}}/>
+        <IconButton size="small" onClick={onClose} color="primary">
+          <CloseRoundedIcon sx={{ width: '24px', height: '24px' }} />
         </IconButton>
       </Box>
     </Box>
@@ -212,10 +214,9 @@ const DetailsDrawer = ({
       >
         <SpinLoader loading={loading} />
 
-        {isEmpty(listChildren)
-        ?
+        {isEmpty(listChildren) ? (
           <>
-            <DrawerTopLabel/>
+            <DrawerTopLabel />
 
             {children && children}
 
@@ -227,36 +228,34 @@ const DetailsDrawer = ({
               isUpdate={open}
             />
           </>
-
-        :
-
+        ) : (
           <>
             <Box
-              position='fixed'
+              position="fixed"
               top={0}
               right={0}
-              width='inherit'
+              width="inherit"
               px={2}
               pt={1}
               zIndex={2}
-              backgroundColor='white'
+              backgroundColor="white"
             >
-              <DrawerTopLabel/>
+              <DrawerTopLabel />
 
               <Box
-                display='flex'
-                alignItems='center'
-                justifyContent='space-between'
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
                 mb={1}
               >
-                {!!tabHeader?.length &&
+                {!!tabHeader?.length && (
                   <TabsMenu
                     tabHeaders={tabHeader}
                     setTabValue={setTabValue}
                     tabValue={tabValue}
                     isSmall
                   />
-                }
+                )}
               </Box>
             </Box>
 
@@ -281,7 +280,7 @@ const DetailsDrawer = ({
               /> */}
             </Box>
           </>
-        }
+        )}
       </Box>
     </Drawer>
   );
